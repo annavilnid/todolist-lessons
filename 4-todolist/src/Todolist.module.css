@@ -1,0 +1,7 @@
+.active_filter {
+    background-color: aquamarine;
+}
+
+.is_done {
+    opacity: 0.5;
+}
