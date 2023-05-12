@@ -36,7 +36,7 @@ function AppWithRedusers() {
   let todolistId1 = v1();
   let todolistId2 = v1();
 
-  const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+  const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists)
   const dispatch = useDispatch();
 
   //
@@ -154,19 +154,19 @@ function AppWithRedusers() {
         </Grid>
         <Grid container spacing={3}>
           {/*{*/}
-          {/*  todolists.map(tl => {*/}
-          {/*    let allTodolistTasks = tasks[tl.id];*/}
-          {/*    let tasksForTodolist = allTodolistTasks;*/}
+          { todolists.map(todolist => {
+            // {/*    let allTodolistTasks = tasks[tl.id];*/}
+            // {/*    let tasksForTodolist = allTodolistTasks;*/}
+            //
+            // {/*    if (tl.filter === "active") {*/}
+            // {/*      tasksForTodolist = allTodolistTasks.filter(t => t.isDone === false);*/}
+            // {/*    }*/}
+            // {/*    if (tl.filter === "completed") {*/}
+            // {/*      tasksForTodolist = allTodolistTasks.filter(t => t.isDone === true);*/}
+            // {/*    }*/}
 
-          {/*    if (tl.filter === "active") {*/}
-          {/*      tasksForTodolist = allTodolistTasks.filter(t => t.isDone === false);*/}
-          {/*    }*/}
-          {/*    if (tl.filter === "completed") {*/}
-          {/*      tasksForTodolist = allTodolistTasks.filter(t => t.isDone === true);*/}
-          {/*    }*/}
-
-              {/*<Grid item>*/}
-              {/*  <Paper style={{padding: "10px"}}>*/}
+            return (<Grid item key={todolist.id}>
+                <Paper style={{padding: "10px"}}>
                   {/*<Todolist*/}
                   {/*  key={tl.id}*/}
                   {/*  id={tl.id}*/}
@@ -181,9 +181,11 @@ function AppWithRedusers() {
                   {/*  changeTaskTitle={changeTaskTitle}*/}
                   {/*  changeTodolistTitle={changeTodolistTitle}*/}
                   {/*/>*/}
-                  <TodolistWithRedux tasks={tasks}/>
-              {/*  </Paper>*/}
-              {/*</Grid>*/}
+                  <TodolistWithRedux todolist={todolist}/>
+                </Paper>
+              </Grid>
+            )
+          })}
           {/*  })*/}
           {/*}*/}
         </Grid>
