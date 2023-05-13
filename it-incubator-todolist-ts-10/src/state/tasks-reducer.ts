@@ -50,27 +50,42 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         }
         case 'CHANGE-TASK-STATUS': {
             const stateCopy = {...state};
-
-            let tasks = stateCopy[action.todolistId];
-            // найдём нужную таску:
-            let task = tasks.find(t => t.id === action.taskId);
-            //изменим таску, если она нашлась
-            if (task) {
-                task.isDone = action.isDone;
-            }
+            // stateCopy[action.todolistId] = stateCopy[action.todolistId].map(t => t.id === action.taskId? {...t, isDone: action.isDone} : t)
+            // let tasks = stateCopy[action.todolistId];
+            // // найдём нужную таску:
+            // let task = tasks.find(t => t.id === action.taskId);
+            // //изменим таску, если она нашлась
+            // if (task) {
+            //     task.isDone = action.isDone;
+            // }
+            // console.log(state)
+            // console.log(stateCopy)
+            // console.log(state === stateCopy)
             return stateCopy;
         }
         case 'CHANGE-TASK-TITLE': {
-            const stateCopy = {...state};
-
-            let tasks = stateCopy[action.todolistId];
-            // найдём нужную таску:
-            let task = tasks.find(t => t.id === action.taskId);
-            //изменим таску, если она нашлась
-            if (task) {
-                task.title = action.title;
-            }
-            return stateCopy;
+            return {...state, [action.todolistId]: state[action.todolistId].map(t => t.id === action.taskId ? {...t, title: action.title} : {...t})}
+            // const stateCopy = {...state};
+            //
+            // let tasks = stateCopy[action.todolistId];
+            // // найдём нужную таску:
+            // let task = tasks.find(t => t.id === action.taskId);
+            // //изменим таску, если она нашлась
+            // if (task) {
+            //     task.title = action.title;
+            // }
+            // console.log(state)
+            // console.log(stateCopy)
+            // console.log(state === stateCopy)
+            // return stateCopy;
+            // let todolistTasks = state[action.todolistId];
+            // // найдём нужную таску:
+            // let task = todolistTasks.find(t => t.id === action.taskId);
+            // //изменим таску, если она нашлась
+            // if (task) {
+            //     task.title = action.title;
+            // }
+            // return ({...state});
         }
         case 'ADD-TODOLIST': {
             const stateCopy = {...state};

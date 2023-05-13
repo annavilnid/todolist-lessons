@@ -29,7 +29,6 @@ type PropsType = {
 }
 
 export function TodolistWithRedux({todolist}: PropsType) {
-
   const {id, title, filter} = todolist;
   const tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[id])
   const dispatch = useDispatch();
@@ -68,19 +67,13 @@ export function TodolistWithRedux({todolist}: PropsType) {
     dispatch(changeTaskTitleAC(taskId, newTitle, id))
   }
 
-
-  function changeFilter(value: FilterValuesType) {
-    dispatch(changeTodolistFilterAC(id, value))
-  }
-
-
   function changeTodolistTitle(title: string) {
     dispatch(changeTodolistTitleAC(id, title))
   }
 
-  const onAllClickHandler = () => changeFilter("all");
-  const onActiveClickHandler = () => changeFilter("active");
-  const onCompletedClickHandler = () => changeFilter("completed");
+  const onAllClickHandler = () => dispatch(changeTodolistFilterAC(id, "all"));
+  const onActiveClickHandler = () => dispatch(changeTodolistFilterAC(id, "active"));
+  const onCompletedClickHandler = () => dispatch(changeTodolistFilterAC(id, "completed"));
 
   return <div>
     <h3> <EditableSpan value={title} onChange={changeTodolistTitle} />
@@ -91,7 +84,7 @@ export function TodolistWithRedux({todolist}: PropsType) {
     <AddItemForm addItem={addTask}/>
     <div>
       {
-        tasksForTodolist.map(t => {
+        tasks.map(t => {
           const onClickHandler = () => removeTask(t.id)
           const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
             let newIsDoneValue = e.currentTarget.checked;
@@ -101,7 +94,6 @@ export function TodolistWithRedux({todolist}: PropsType) {
             changeTaskTitle(t.id, newValue);
           }
 
-          {console.log(t.isDone)}
           return <div key={t.id} className={t.isDone ? "is-done" : ""}>
             <Checkbox
               checked={t.isDone}
