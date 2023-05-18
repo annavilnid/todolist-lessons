@@ -16,7 +16,6 @@ import {Todolist} from './Todolist/Todolist'
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import {RequestStatusType} from "../../app/app-reduser";
 
 export const TodolistsList: React.FC = () => {
 
