@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import {authReducer} from "../features/auth/authSlice";
 import {appReducer} from "./appSlice";
 import {todolistsReducer} from "../features/TodolistsList/Todolist/TodolistSlice";
+import {tasksReducer} from "../features/TodolistsList/Todolist/Task/tasksSlice";
 
 export const store = configureStore({
     reducer: {
         app: appReducer,
         auth: authReducer,
         todolists: todolistsReducer,
+        tasks: tasksReducer,
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware)
 })
