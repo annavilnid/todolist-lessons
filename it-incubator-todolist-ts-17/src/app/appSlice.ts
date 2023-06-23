@@ -1,24 +1,16 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-export type InitialStateType = {
-    status: RequestStatusType;
-    error: string | null;
-    isInitialized: boolean;
-};
-
-const initialState: InitialStateType = {
-    status: 'idle',
-    error: null,
-    isInitialized: false
-};
-
 // slice - редьюсеры создаем с помощью функции createSlice
 const slice = createSlice({
     // важно чтобы не дублировалось, будет в качетве приставки согласно соглашению redux ducks
     name: 'app',
     //❗Если будут писаться тесты на slice или где понадобится типизация,
     // тогда выносим initialState наверх
-    initialState,
+    initialState: {
+        status: "idle" as RequestStatusType,
+        error: null as string | null,
+        isInitialized: false,
+    },
     // состоит из подредьюсеров, каждый из которых эквивалентен одному оператору case в switch, как мы делали раньше (обычный redux)
     reducers: {
         //❗в жизни  AC писать не надо.

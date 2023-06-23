@@ -14,10 +14,10 @@ const slice = createSlice({
         //❗в жизни setIsLoggedInAC c AC писать не надо.
         // оставим только для того чтобы делать плавный рефакторинг
         // Объект payload. Типизация через PayloadAction
-        setIsLoggedInAC: (state, action: PayloadAction<{ value: boolean }>) => {
+        setIsLoggedInAC: (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
             // логику в подредьюсерах пишем мутабельным образом,
             // т.к. иммутабельность достигается благодаря immer.js
-            state.isLoggedIn = action.payload.value
+            state.isLoggedIn = action.payload.isLoggedIn
         }
     }
 })

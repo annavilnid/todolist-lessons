@@ -1,49 +1,63 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {Dispatch} from 'redux'
 import {authAPI} from '../api/todolists-api'
-import {setIsLoggedInAC} from '../features/Login/auth-reducer'
+import {authActions} from '../features/Login/auth-reducer'
 
-const initialState: InitialStateType = {
-    status: 'idle',
-    error: null,
-    isInitialized: false
+const initialState = {
+    status: "idle" as RequestStatusType,
+    error: null as string | null,
+    isInitialized: false,
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, error: action.error}
-        case 'APP/SET-IS-INITIALIED':
-            return {...state, isInitialized: action.value}
-        default:
-            return {...state}
+export type InitialStateType = typeof initialState
+
+const slice = createSlice({
+    // важно чтобы не дублировалось, будет в качетве приставки согласно соглашению redux ducks
+    name: 'app',
+    //❗Если будут писаться тесты на slice или где понадобится типизация,
+    // тогда выносим initialState наверх
+    initialState,
+    // состоит из подредьюсеров, каждый из которых эквивалентен одному оператору case в switch, как мы делали раньше (обычный redux)
+    reducers: {
+        //❗в жизни  AC писать не надо.
+        // оставим только для того чтобы делать плавный рефакторинг
+        // Объект payload. Типизация через PayloadAction
+        setAppErrorAC: (state, action: PayloadAction<{ error: string | null }>) => {
+            // логику в подредьюсерах пишем мутабельным образом,
+            // т.к. иммутабельность достигается благодаря immer.js
+            state.error = action.payload.error
+        },
+        setAppStatusAC: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
+            // логику в подредьюсерах пишем мутабельным образом,
+            // т.к. иммутабельность достигается благодаря immer.js
+            state.status = action.payload.status
+        },
+        setAppInitializedAC: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
+            // логику в подредьюсерах пишем мутабельным образом,
+            // т.к. иммутабельность достигается благодаря immer.js
+            state.isInitialized = action.payload.isInitialized
+        },
     }
-}
+})
+
+// Создаем reducer с помощью slice
+export const appReducer = slice.reducer;
+// Action creator также достаем с помощью slice
+export const {setAppErrorAC, setAppStatusAC, setAppInitializedAC} = slice.actions
+// либо вот так. ❗Делаем так, в дальнейшем пригодиться
+// export const appActions = slice.actions
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-export type InitialStateType = {
-    // происходит ли сейчас взаимодействие с сервером
-    status: RequestStatusType
-    // если ошибка какая-то глобальная произойдёт - мы запишем текст ошибки сюда
-    error: string | null
-    // true когда приложение проинициализировалось (проверили юзера, настройки получили и т.д.)
-    isInitialized: boolean
-}
-
-export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
-export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
-export const setAppInitializedAC = (value: boolean) => ({type: 'APP/SET-IS-INITIALIED', value} as const)
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     authAPI.me().then(res => {
         if (res.data.resultCode === 0) {
-            dispatch(setIsLoggedInAC(true));
+            dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
         } else {
 
         }
 
-        dispatch(setAppInitializedAC(true));
+        dispatch(setAppInitializedAC({isInitialized: true}));
     })
 }
 
